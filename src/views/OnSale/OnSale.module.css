@@ -1,0 +1,63 @@
+/* MAIN */
+main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* MAIN PRODUCTS */
+.onsale-product-container {
+  min-width: 300px; /* Define un ancho mínimo */
+  width: auto;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 30px;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* NAVIGATION BUTTONS */
+
+/* Estilos para los botones de navegación a la izquierda */
+.navigation-buttons-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Alinea los botones a la izquierda */
+  justify-content: center;
+}
+
+/* Estilos para los botones de navegación a la derecha */
+.navigation-buttons-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Alinea los botones a la izquierda */
+  justify-content: center;
+}
+
+/* Estilos para los botones dentro de los contenedores */
+.navigation-buttons-left button,
+.navigation-buttons-right button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px; /* Bordes redondeados */
+  transition: background-color 0.3s; /* Transición suave para el fondo */
+}
+
+/* Estilos para los botones al pasar el cursor */
+.navigation-buttons-left button:hover,
+.navigation-buttons-right button:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para los botones deshabilitados */
+.navigation-buttons-left button:disabled,
+.navigation-buttons-right button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

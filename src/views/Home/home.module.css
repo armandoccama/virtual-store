@@ -1,0 +1,32 @@
+/* MAIN */
+main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* MAIN PRODUCTS */
+.product-container {
+  width: 1080px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Pantallas pequeñas */
+@media only screen and (max-width: 768px) {
+  .product-container {
+    width: 100%;
+    justify-content: center;
+  }
+}
+/* Pantallas medianas */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  .product-container {
+    width: 100%;
+    column-gap: 20px;
+    justify-content: center;
+  }
+}
