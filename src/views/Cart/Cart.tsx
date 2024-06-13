@@ -9,18 +9,28 @@ import { useEffect, useState } from "react";
 
 function Cart() {
   const [productsOnCart, setProductsOnCart] = useState([]);
+  const [totalPrecioCarrito, setTotalPrecioCarrito] = useState(0);
 
   useEffect(() => {
     const cart = localStorage.getItem("cart");
     if (cart) {
       const products = JSON.parse(cart);
+      const productsOnCartReduce = products.reduce((acc, item) => {
+        if (item.priceTotal) {
+          acc += item.priceTotal;
+        } else {
+          acc += item.price;
+        }
+        return acc;
+      }, 0);
       setProductsOnCart(products);
+      setTotalPrecioCarrito(productsOnCartReduce);
     }
     // if (localStorage.getItem("cart")) {
     //   const products = JSON.parse(localStorage.getItem("cart"));
     //   setProductsOnCart(products);
     // }
-  }, []);
+  }, [productsOnCart]);
 
   return (
     <>
@@ -66,7 +76,7 @@ function Cart() {
             <CartCard key={each.id} product={each} />
           ))}
         </section>
-        <CartResume price="800000" />
+        <CartResume price={totalPrecioCarrito} />
         {/* <div className="bg-gray-100 rounded-[5px] p-[30px] m-[10px] h-[220px] break-words flex justify-between w-[340px] flex-col">
           <div className="flex-grow flex flex-col justify-between">
             <h2 className="flex justify-normal gap-1">
