@@ -240,7 +240,8 @@ const prod16 = new Product(
     "https://i.postimg.cc/8zr9Yx6T/lenovo-3.avif",
   ],
   ["Black", "Silver"],
-  true
+  true,
+  30
 );
 const prod17 = new Product(
   "J1K2L3",

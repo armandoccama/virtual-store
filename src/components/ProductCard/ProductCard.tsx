@@ -1,7 +1,14 @@
 import { Link } from "react-router-dom";
 import styles from "../ProductCard/productCard.module.css";
 function ProductCard(props) {
-  const { id, title, image, colors, price, onsale } = props;
+  const { id, title, image, colors, price, onsale, discount } = props;
+
+  const formattedPrice = new Intl.NumberFormat("es-ES", {
+    style: "decimal",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price);
+
   return (
     <>
       <Link className={styles["product-card"]} to={"/details/" + id} key={id}>
@@ -10,9 +17,11 @@ function ProductCard(props) {
           <span className={styles["product-title"]}>{title}</span>
           <span className={styles["product-description"]}>{colors}</span>
           <div className={styles["product-price-block"]}>
-            <span className={styles["product-price"]}>{price}</span>
+            <span className={styles["product-price"]}>{formattedPrice}</span>
             {onsale && (
-              <span className={styles["product-discount"]}>50% Off</span>
+              <span className={styles["product-discount"]}>
+                {discount}% Off
+              </span>
             )}
           </div>
           <div className={styles["product-tax-policy"]}>

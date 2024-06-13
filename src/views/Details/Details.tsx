@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import products from "../../models/products";
 // import Truck from "../../assets/img/truck.png";
 // import Plane from "../../assets/img/plane.png";
-import styles from "./details.module.css";
+// import styles from "./details.module.css";
 import Footer from "../../components/Footer/Footer";
 import NavBar from "../../components/NavBar/NavBar";
 import Hero from "../../components/Hero/Hero";
@@ -20,42 +20,26 @@ function Details() {
   const product = products.find((each) => each.id === id);
   const onsale = products.filter((each) => each.onsale);
 
-  // const [product, setProduct] = useState(null);
-
-  // const [product, setProduct] = useState<Product | null>(null); // Anotación de tipo explícita para product
-  // const [product, setProduct] = useState<Product[]>([]);
-  // useEffect(() => {
-  //   const fetchProduct = async () => {
-  //     // const products = await fetchProducts();
-  //     const product = products.find((p) => p.id === id) || null;
-  //     console.log("data detalle", product);
-  //     setProduct(product);
-  //   };
-
-  //   fetchProduct();
-  // }, [id]);
-
-  // if (!product) {
-  //   return <div>Loading...</div>;
-  // }
-
   return (
     <>
       <NavBar />
       {!product && <Hero first="NOT" second="found" />}
-      <main>
-        <div className={styles["details-container"]}>
+      <main className="w-full flex justify-center items-center p-[20px]">
+        <div className="w-full flex flex-wrap justify-between">
           {product && (
-            <div id="details" className={styles["columns-container"]}>
+            <div id="details" className="w-full flex justify-center flex-wrap">
               <Thumbs product={product} />
               {/* <Thumbs product={product} /> */}
               <Description product={product} />
               <Checkout product={product} />
             </div>
           )}
-          <div className={styles["sales-block"]}>
-            <h2 className={styles["sales-title"]}>Ofertas de la semana</h2>
-            <div id="product-container" className={styles["product-container"]}>
+          <div className="w-full flex flex-col justify-center items-center mt-8">
+            <h2 className="text-[40px]">Ofertas de la semana</h2>
+            <div
+              id="product-container"
+              className="flex flex-col md:flex-row flex-wrap items-center justify-between w-full lg:w-[1024px]"
+            >
               {onsale.map((product) => (
                 <ProductCard
                   key={product.id}
