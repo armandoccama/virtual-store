@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 
-export default function CartCard({ product }) {
+export default function CartCard({ product, updateProductUnits }) {
   const {
     id,
     title,
@@ -12,7 +12,7 @@ export default function CartCard({ product }) {
   } = product;
 
   const unitsRef = useRef(initialUnits);
-  const [totalPrice, setTotalPrice] = useState(price * initialUnits);
+  // const [totalPrice, setTotalPrice] = useState(price * initialUnits);
 
   const manageUnits = () => {
     const newUnits = Number(unitsRef.current.value);
@@ -22,23 +22,18 @@ export default function CartCard({ product }) {
     const one = productsOnCart.find((each) => each.id === id);
 
     one.units = newUnits;
-    one.priceTotal = price * newUnits; // Actualizar el precio total calculado
+    // one.priceTotal = price * newUnits; // Actualizar el precio total calculado
     localStorage.setItem("cart", JSON.stringify(productsOnCart));
 
-    setTotalPrice(price * newUnits);
+    updateProductUnits(id, newUnits);
+    // setTotalPrice(price * newUnits);
   };
 
-  useEffect(() => {
-    const cart = localStorage.getItem("cart");
-    if (cart) {
-      const productsOnCart = JSON.parse(cart);
-      const productInCart = productsOnCart.find((each) => each.id === id);
-      if (productInCart) {
-        unitsRef.current.value = productInCart.units;
-        setTotalPrice(productInCart.priceTotal); // Usar el precio total calculado desde localStorage
-      }
-    }
-  }, [id, price]);
+  const formattedPrice = new Intl.NumberFormat("es-ES", {
+    style: "decimal",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price);
 
   return (
     <article className="w-[340px] lg:w-[680px] md:h-[220px] flex justify-between items-center rounded-md px-[30px] py-[15px] lg:py-[30px] m-[10px] bg-[#f2f2f2]">
@@ -72,7 +67,7 @@ export default function CartCard({ product }) {
           />
         </div>
         <strong className="text-start lg:text-end text-[14px] px-[10px]">
-          AR$ ${totalPrice ? totalPrice : price}
+          AR$ ${formattedPrice}
         </strong>
       </div>
     </article>

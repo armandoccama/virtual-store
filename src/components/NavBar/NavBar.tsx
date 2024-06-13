@@ -73,7 +73,7 @@ export default function NavBar() {
         lg:grid-cols-5 justify-items-center mt-3"
         id="navbar"
       >
-        <NavButton title="Ofertas" link="/" />
+        <NavButton title="Ofertas" link="/onsale" />
         <NavButton title="Cómo comprar" link="/" />
         <NavButton title="Costos y tarifas" link="/" />
         <NavButton title="Mis pedidos" link="/" />

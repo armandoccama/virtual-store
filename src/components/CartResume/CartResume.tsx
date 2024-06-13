@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CartResume({ price }) {
-  // const [totalPrecioCarrito, setTotalPrecioCarrito] = useState(0);
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const cart = localStorage.getItem("cart");
-  //   const parsedCart = JSON.parse(cart);
+  const formattedPrice = new Intl.NumberFormat("es-ES", {
+    style: "decimal",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price);
 
-  //   const productsOnCartReduce = parsedCart.reduce((acc, item) => {
-  //     acc += item.priceTotal;
-  //     return acc;
-  //   }, 0);
-  //   // Establecer el total de precio del carrito en el estado
-  //   setTotalPrecioCarrito(productsOnCartReduce);
-  // }, []);
+  const clearCart = () => {
+    localStorage.clear();
+    navigate("/");
+  };
+
   return (
     <div className="w-[340px] h-[220px] flex flex-col justify-between rounded-md p-[30px] m-[10px] bg-[#f2f2f2]">
       <div className="flex-grow flex flex-col justify-between">
@@ -24,7 +24,7 @@ export default function CartResume({ price }) {
         </h2>
         <div className="flex justify-between items-center">
           <h3>Total</h3>
-          <strong>${price}</strong>
+          <strong>${formattedPrice}</strong>
         </div>
         <small className="pb-[10px]">
           Incluye impuesto PAIS y percepción AFIP.
@@ -34,6 +34,7 @@ export default function CartResume({ price }) {
         className="w-full h-[40px] bg-[#ff3b3c] text-white font-bold border-0 rounded-md"
         id="buy"
         type="button"
+        onClick={clearCart}
       >
         COMPRAR
       </button>
