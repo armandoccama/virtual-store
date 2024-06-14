@@ -1,4 +1,4 @@
-import { Product } from "../interfaces/product";
+import { Product } from "../interfaces/Product";
 
 export const fetchProducts = async (): Promise<Product[]> => {
   const response = await fetch('/models/product.json');

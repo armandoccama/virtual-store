@@ -6,6 +6,8 @@ import Hero from "../../components/Hero/Hero";
 import CartCard from "../../components/CartCard/CartCard";
 import CartResume from "../../components/CartResume/CartResume";
 import { useEffect, useState } from "react";
+// import ICartCard from "../../interfaces/ICartCard";
+import Product from "../../interfaces/Product";
 
 function Cart() {
   const [productsOnCart, setProductsOnCart] = useState([]);
@@ -32,8 +34,17 @@ function Cart() {
     calculateTotalPrice();
   }, [productsOnCart]);
 
+  // const cartTotal = useMemo(
+  //   () =>
+  //     productsOnCart.reduce((acc, item) => {
+  //       acc += item.units * item.price;
+  //       return acc;
+  //     }, 0),
+  //   [productsOnCart]
+  // );
+
   const updateProductUnits = (productId, newUnits) => {
-    const updatedProducts = productsOnCart.map((product) => {
+    const updatedProducts = productsOnCart.map((product: Product) => {
       if (product.id === productId) {
         return { ...product, units: newUnits };
       }

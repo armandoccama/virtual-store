@@ -1,19 +1,28 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./checkout.module.css";
+import ProductProp from "../../interfaces/ProductProp";
+import Product from "../../interfaces/Product";
 
-function Checkout({ product }) {
+function Checkout(props: ProductProp) {
+  interface ICartProduct extends Product {
+    units: number;
+  }
+  const { product } = props;
   const [quantity, setQuantity] = useState(1);
   const [button, setButton] = useState(false);
   const units = useRef(1);
 
   useEffect(() => {
-    let productsOnCart = [];
-    if (localStorage.getItem("cart")) {
-      productsOnCart = JSON.parse(localStorage.getItem("cart"));
+    const productsOnCart = localStorage.getItem("cart");
+    // let products = [];
+    let products: ICartProduct[] = [];
+    if (productsOnCart) {
+      products = JSON.parse(productsOnCart);
     } else {
       localStorage.setItem("cart", JSON.stringify([]));
     }
-    const one = productsOnCart.find((item) => item.id === product.id);
+    const one = products?.find((item: ICartProduct) => item.id === product.id);
+
     if (one) {
       setQuantity(one.units);
       setButton(true);
@@ -30,23 +39,23 @@ function Checkout({ product }) {
   // }
 
   const manageCart = () => {
-    let productsOnCart = [];
-    const cartItem = localStorage.getItem("cart");
-    if (cartItem !== null) {
-      productsOnCart = JSON.parse(cartItem);
+    const productsOnCart = localStorage.getItem("cart");
+    let products = [];
+    if (productsOnCart) {
+      products = JSON.parse(productsOnCart);
     }
 
-    const one = productsOnCart.find((each) => each.id === product.id);
+    const one = products?.find((each: Product) => each.id === product.id);
     if (!one) {
       // product.units = quantity;
       product.units = Number(units.current.value);
-      productsOnCart.push(product);
+      products.push(product);
       setButton(true);
     } else {
-      productsOnCart = productsOnCart.filter((each) => each.id !== product.id);
+      products = products?.filter((each: Product) => each.id !== product.id);
       setButton(false);
     }
-    localStorage.setItem("cart", JSON.stringify(productsOnCart));
+    localStorage.setItem("cart", JSON.stringify(products));
   };
 
   return (

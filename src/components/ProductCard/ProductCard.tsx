@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import styles from "../ProductCard/productCard.module.css";
-function ProductCard(props) {
-  const { id, title, image, colors, price, onsale, discount } = props;
+import Product from "../../interfaces/Product";
+
+function ProductCard(props: Product) {
+  const { id, title, images, colors, price, onsale, discount } = props;
 
   const formattedPrice = new Intl.NumberFormat("es-ES", {
     style: "decimal",
@@ -12,10 +14,10 @@ function ProductCard(props) {
   return (
     <>
       <Link className={styles["product-card"]} to={"/details/" + id} key={id}>
-        <img className={styles["product-img"]} src={image} alt={title} />
+        <img className={styles["product-img"]} src={images[0]} alt={title} />
         <div className={styles["product-info"]}>
           <span className={styles["product-title"]}>{title}</span>
-          <span className={styles["product-description"]}>{colors}</span>
+          <span className={styles["product-description"]}>{colors[0]}</span>
           <div className={styles["product-price-block"]}>
             <span className={styles["product-price"]}>{formattedPrice}</span>
             {onsale && (

@@ -4,6 +4,7 @@ import products from "../../models/products";
 import Footer from "../../components/Footer/Footer";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Hero from "../../components/Hero/Hero";
+import Product from "../../interfaces/Product";
 
 function Home() {
   return (
@@ -18,13 +19,13 @@ function Home() {
           className="w-[1080px] flex items-center flex-wrap justify-center md:justify-evenly lg:justify-between"
           id="products"
         >
-          {products.map((product) => (
+          {products.map((product: Product) => (
             <ProductCard
               key={product.id}
               id={product.id}
               title={product.title}
-              image={product.images[0]}
-              colors={product.colors[0]}
+              images={product.images}
+              colors={product.colors}
               price={product.price}
               onsale={product.onsale}
               discount={product.discount}

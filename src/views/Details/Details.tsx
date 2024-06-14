@@ -12,13 +12,14 @@ import Description from "../../components/Description/Description";
 import Checkout from "../../components/Checkout/Checkout";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Thumbs from "../../components/Thumbs/Thumbs";
+import Product from "../../interfaces/Product";
 // import { fetchProducts } from "../../services/productService";
 // import { Product } from "../../interfaces/product";
 
 function Details() {
   const { id } = useParams();
-  const product = products.find((each) => each.id === id);
-  const onsale = products.filter((each) => each.onsale);
+  const product: Product = products.find((each) => each.id === id);
+  const onsale: Product[] = products.filter((each) => each.onsale);
 
   return (
     <>
@@ -40,15 +41,16 @@ function Details() {
               id="product-container"
               className="flex flex-col md:flex-row flex-wrap items-center justify-between w-full lg:w-[1024px]"
             >
-              {onsale.map((product) => (
+              {onsale.map((products: Product) => (
                 <ProductCard
-                  key={product.id}
-                  id={product.id}
-                  title={product.title}
-                  image={product.images[0]}
-                  colors={product.colors[0]}
-                  price={product.price}
-                  onsale={product.onsale}
+                  key={products.id}
+                  id={products.id}
+                  title={products.title}
+                  images={products.images}
+                  colors={products.colors}
+                  price={products.price}
+                  onsale={products.onsale}
+                  discount={product.discount}
                 />
               ))}
             </div>

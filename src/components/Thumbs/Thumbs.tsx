@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import ProductProp from "../../interfaces/ProductProp";
 // import styles from "./thumbs.module.css";
 
-function Thumbs({ product }) {
+function Thumbs(props: ProductProp) {
+  const { product } = props;
   const [thumb, setThumb] = useState(product.images[0] || "/mock1.jpg");
 
   useEffect(() => setThumb(product.images[0]), [product.id]);
