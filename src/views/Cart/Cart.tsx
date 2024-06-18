@@ -10,8 +10,13 @@ import { useEffect, useState } from "react";
 import Product from "../../interfaces/Product";
 
 function Cart() {
-  const [productsOnCart, setProductsOnCart] = useState([]);
-  const [totalPrecioCarrito, setTotalPrecioCarrito] = useState(0);
+  const [productsOnCart, setProductsOnCart] = useState<Product[]>([]);
+
+  const totalPrice = productsOnCart.reduce((acc, item: Product) => {
+    const units = item.units ?? 1;
+    acc += units * item.price;
+    return acc;
+  }, 0);
 
   useEffect(() => {
     const cart = localStorage.getItem("cart");
@@ -20,28 +25,6 @@ function Cart() {
       setProductsOnCart(products);
     }
   }, []);
-
-  useEffect(() => {
-    const calculateTotalPrice = () => {
-      const total = productsOnCart.reduce((acc, item) => {
-        acc += item.units * item.price;
-        return acc;
-      }, 0);
-      console.log("data chile", total);
-      setTotalPrecioCarrito(total);
-    };
-
-    calculateTotalPrice();
-  }, [productsOnCart]);
-
-  // const cartTotal = useMemo(
-  //   () =>
-  //     productsOnCart.reduce((acc, item) => {
-  //       acc += item.units * item.price;
-  //       return acc;
-  //     }, 0),
-  //   [productsOnCart]
-  // );
 
   const updateProductUnits = (productId, newUnits) => {
     const updatedProducts = productsOnCart.map((product: Product) => {
@@ -69,7 +52,7 @@ function Cart() {
             />
           ))}
         </section>
-        <CartResume price={totalPrecioCarrito} />
+        <CartResume price={totalPrice} />
       </main>
       <Footer />
     </>

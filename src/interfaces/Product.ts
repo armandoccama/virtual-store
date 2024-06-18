@@ -18,6 +18,8 @@ export default interface Product {
   quantity?: number;
   images: Array<string>;
   colors: Array<string>;
-  onsale: number;
-  discount:number;
+  onsale?: number;
+  discount?:number;
+  units?:number;
+  stock?:number;
 }

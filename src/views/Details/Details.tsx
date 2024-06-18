@@ -1,7 +1,10 @@
 // import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 // import products, { Product } from "../../models/products";
-import products from "../../models/products";
+// import products from "../../models/products";
 // import Truck from "../../assets/img/truck.png";
 // import Plane from "../../assets/img/plane.png";
 // import styles from "./details.module.css";
@@ -9,17 +12,42 @@ import Footer from "../../components/Footer/Footer";
 import NavBar from "../../components/NavBar/NavBar";
 import Hero from "../../components/Hero/Hero";
 import Description from "../../components/Description/Description";
-import Checkout from "../../components/Checkout/Checkout";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Thumbs from "../../components/Thumbs/Thumbs";
 import Product from "../../interfaces/Product";
+import Checkout from "../../components/Checkout/Checkout";
 // import { fetchProducts } from "../../services/productService";
 // import { Product } from "../../interfaces/product";
 
 function Details() {
   const { id } = useParams();
-  const product: Product = products.find((each) => each.id === id);
-  const onsale: Product[] = products.filter((each) => each.onsale);
+  const [product, setProduct] = useState<Product>({
+    id: "",
+    title: "",
+    price: 0,
+    images: [],
+    colors: [],
+  });
+  const [onsale, setOnSale] = useState<Product[]>([]);
+
+  // const product: Product = products.find((each: Product) => each.id === id);
+  // const onsale: Product[] = products.filter((each: Product) => each.onsale);
+
+  useEffect(() => {
+    axios("/products.json")
+      .then((res) => {
+        const products: Array<Product> = res.data.products;
+        const detailProduct: Product | undefined = products.find(
+          (each) => each.id === id
+        );
+        detailProduct && setProduct(detailProduct);
+        const filterProducts: Array<Product> = products.filter(
+          (each) => each.onsale
+        );
+        filterProducts.length > 0 && setOnSale(filterProducts);
+      })
+      .catch((err) => console.log(err));
+  }, [id]);
 
   return (
     <>

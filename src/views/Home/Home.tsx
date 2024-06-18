@@ -1,12 +1,24 @@
 // import styles from "./home.module.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 import NavBar from "../../components/NavBar/NavBar";
-import products from "../../models/products";
+// import products from "../../models/products";
 import Footer from "../../components/Footer/Footer";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Hero from "../../components/Hero/Hero";
 import Product from "../../interfaces/Product";
 
 function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("/products.json")
+      .then((res) => setProducts(res.data.products))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <>
       <NavBar />

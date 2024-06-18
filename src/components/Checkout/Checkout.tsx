@@ -1,30 +1,27 @@
+export default Checkout;
 import { useEffect, useRef, useState } from "react";
 import styles from "./checkout.module.css";
 import ProductProp from "../../interfaces/ProductProp";
 import Product from "../../interfaces/Product";
 
-function Checkout(props: ProductProp) {
-  interface ICartProduct extends Product {
-    units: number;
-  }
-  const { product } = props;
+export function Checkout({ product }: ProductProp) {
+  // const { product } = props;
   const [quantity, setQuantity] = useState(1);
   const [button, setButton] = useState(false);
-  const units = useRef(1);
-
+  const units = useRef<HTMLInputElement>(null);
   useEffect(() => {
     const productsOnCart = localStorage.getItem("cart");
     // let products = [];
-    let products: ICartProduct[] = [];
+    let products: Product[] = [];
     if (productsOnCart) {
       products = JSON.parse(productsOnCart);
     } else {
       localStorage.setItem("cart", JSON.stringify([]));
     }
-    const one = products?.find((item: ICartProduct) => item.id === product.id);
+    const one = products?.find((item: Product) => item.id === product.id);
 
     if (one) {
-      setQuantity(one.units);
+      setQuantity(one.units ?? 1);
       setButton(true);
     } else {
       setQuantity(1);
@@ -33,24 +30,25 @@ function Checkout(props: ProductProp) {
   }, [product.id]);
 
   // const cartItem = localStorage.getItem("cart");
-
   // if (cartItem === null) {
   //   localStorage.setItem("cart", JSON.stringify([]));
   // }
-
   const manageCart = () => {
     const productsOnCart = localStorage.getItem("cart");
-    let products = [];
+    let products: Product[] = [];
     if (productsOnCart) {
       products = JSON.parse(productsOnCart);
     }
 
     const one = products?.find((each: Product) => each.id === product.id);
     if (!one) {
-      // product.units = quantity;
-      product.units = Number(units.current.value);
-      products.push(product);
-      setButton(true);
+      if (units.current) {
+        console.log("dataMass", units.current.value);
+        // product.units = quantity;
+        product.units = Number(units.current.value);
+        products.push(product);
+        setButton(true);
+      }
     } else {
       products = products?.filter((each: Product) => each.id !== product.id);
       setButton(false);
@@ -95,7 +93,7 @@ function Checkout(props: ProductProp) {
               min="1"
               value={quantity}
               ref={units}
-              onChange={() => setQuantity(Number(units.current.value))}
+              onChange={() => setQuantity(Number(units.current?.value))}
               disabled={button}
               className="h-[40px] rounded-md border-0 w-[60px] mr-[10px] p-[5px] pl-[15px] box-border"
             />
@@ -116,5 +114,3 @@ function Checkout(props: ProductProp) {
     </div>
   );
 }
-
-export default Checkout;

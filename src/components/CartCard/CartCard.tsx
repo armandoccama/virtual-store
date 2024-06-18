@@ -1,7 +1,11 @@
 import { useRef } from "react";
+import CartCardProps from "../../interfaces/CartCardProps";
 // import ICartCard from "../../interfaces/ICartCard";
 
-export default function CartCard({ product, updateProductUnits }) {
+export default function CartCard({
+  product,
+  updateProductUnits,
+}: CartCardProps) {
   const {
     id,
     title,
@@ -12,11 +16,11 @@ export default function CartCard({ product, updateProductUnits }) {
     units: initialUnits,
   } = product;
 
-  const unitsRef = useRef(initialUnits);
+  const unitsRef = useRef<HTMLInputElement>(null);
   // const [totalPrice, setTotalPrice] = useState(price * initialUnits);
 
   const manageUnits = () => {
-    const newUnits = Number(unitsRef.current.value);
+    const newUnits = Number(unitsRef.current?.value);
 
     const cart = localStorage.getItem("cart");
     const productsOnCart = cart ? JSON.parse(cart) : [];

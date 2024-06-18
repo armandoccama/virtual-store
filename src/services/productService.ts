@@ -1,7 +1,7 @@
-import { Product } from "../interfaces/Product";
+import Product from "../interfaces/Product";
 
 export const fetchProducts = async (): Promise<Product[]> => {
-  const response = await fetch('/models/product.json');
+  const response = await fetch('/products.json');
   const data = await response.json();
-  return data;
+  return data.products; // Adjust according to the structure of your JSON
 };
