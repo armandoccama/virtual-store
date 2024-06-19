@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "../ProductCard/productCard.module.css";
 import Product from "../../interfaces/Product";
+// import { useSelector } from "react-redux";
 
 function ProductCard(props: Product) {
   const { id, title, images, colors, price, onsale, discount } = props;
@@ -10,6 +11,9 @@ function ProductCard(props: Product) {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(price);
+
+  // const store = useSelector((store) => store);
+  // console.log(store);
 
   return (
     <>

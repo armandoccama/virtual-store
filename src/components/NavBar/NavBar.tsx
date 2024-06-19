@@ -1,9 +1,23 @@
 // import styles from "./NavBar.module.css";
+import { useRef } from "react";
+// import { useDispatch } from "react-redux";
+import { useDispatch } from "../../interfaces/hook";
+
 import LogoImg from "../../assets/img/tiendamia-logo.svg";
 import NavButton from "../NavButton/NavButton";
 import { Link } from "react-router-dom";
+import productsActions from "../../store/actions/product";
+
+const { captureText } = productsActions;
 
 export default function NavBar() {
+  // const text = useRef();
+  const text = useRef<HTMLInputElement>(null!);
+  const dispatch = useDispatch();
+  const setText = () => {
+    dispatch(captureText({ text: text.current.value }));
+  };
+
   return (
     <header className="w-full min-h-[150px] bg-[#ff3b3c] p-[20px 20px 0 20px] py-5 flex flex-col items-center">
       <div
@@ -29,6 +43,8 @@ export default function NavBar() {
             type="text"
             placeholder="Search"
             id="search"
+            ref={text}
+            onChange={setText}
           />
         </form>
         <ul

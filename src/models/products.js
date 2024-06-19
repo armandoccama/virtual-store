@@ -321,7 +321,7 @@ const products = [
   prod20,
 ];
 
-const dat = JSON.stringify(products);
-console.log(dat);
+// const dat = JSON.stringify(products);
+// console.log(dat);
 
 export default products;

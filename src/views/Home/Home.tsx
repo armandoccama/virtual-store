@@ -8,16 +8,27 @@ import Footer from "../../components/Footer/Footer";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Hero from "../../components/Hero/Hero";
 import Product from "../../interfaces/Product";
+import { useSelector } from "../../interfaces/hook";
+// import { useSelector } from "react-redux";
 
 function Home() {
   const [products, setProducts] = useState<Product[]>([]);
+  const text = useSelector((store) => store.products.text);
 
   useEffect(() => {
     axios
       .get("/products.json")
-      .then((res) => setProducts(res.data.products))
+      .then((res) => {
+        const filterData = res.data.products.filter((each) =>
+          each.title.toLowerCase().includes(text.toLowerCase())
+        );
+        // console.log("data", filterData);
+        setProducts(filterData);
+      })
       .catch((err) => console.log(err));
-  }, []);
+  }, [text]);
+
+  // console.log(text);
 
   return (
     <>
