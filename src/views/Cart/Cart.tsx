@@ -6,37 +6,43 @@ import Hero from "../../components/Hero/Hero";
 import CartCard from "../../components/CartCard/CartCard";
 import CartResume from "../../components/CartResume/CartResume";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import productsActions from "../../store/actions/products";
 // import ICartCard from "../../interfaces/ICartCard";
 import Product from "../../interfaces/Product";
 
+const { calculateTotal } = productsActions;
+
 function Cart() {
   const [productsOnCart, setProductsOnCart] = useState<Product[]>([]);
+  const dispatch = useDispatch();
 
-  const totalPrice = productsOnCart.reduce((acc, item: Product) => {
-    const units = item.units ?? 1;
-    acc += units * item.price;
-    return acc;
-  }, 0);
+  // const totalPrice = productsOnCart.reduce((acc, item: Product) => {
+  //   const units = item.units ?? 1;
+  //   acc += units * item.price;
+  //   return acc;
+  // }, 0);
 
   useEffect(() => {
     const cart = localStorage.getItem("cart");
     if (cart) {
-      const products = JSON.parse(cart);
-      setProductsOnCart(products);
+      const productsCart = JSON.parse(cart);
+      setProductsOnCart(productsCart);
+      dispatch(calculateTotal({ products: productsCart }));
     }
   }, []);
 
-  const updateProductUnits = (productId, newUnits) => {
-    const updatedProducts = productsOnCart.map((product: Product) => {
-      if (product.id === productId) {
-        return { ...product, units: newUnits };
-      }
-      return product;
-    });
+  // const updateProductUnits = (productId, newUnits) => {
+  //   const updatedProducts = productsOnCart.map((product: Product) => {
+  //     if (product.id === productId) {
+  //       return { ...product, units: newUnits };
+  //     }
+  //     return product;
+  //   });
 
-    setProductsOnCart(updatedProducts);
-    localStorage.setItem("cart", JSON.stringify(updatedProducts));
-  };
+  //   setProductsOnCart(updatedProducts);
+  //   localStorage.setItem("cart", JSON.stringify(updatedProducts));
+  // };
 
   return (
     <>
@@ -48,11 +54,12 @@ function Cart() {
             <CartCard
               key={each.id}
               product={each}
-              updateProductUnits={updateProductUnits}
+              // updateProductUnits={updateProductUnits}
             />
           ))}
         </section>
-        <CartResume price={totalPrice} />
+        {/* <CartResume price={totalPrice} /> */}
+        <CartResume />
       </main>
       <Footer />
     </>

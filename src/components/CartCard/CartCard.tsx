@@ -1,11 +1,15 @@
 import { useRef } from "react";
 import CartCardProps from "../../interfaces/CartCardProps";
+import { useDispatch } from "react-redux";
 // import ICartCard from "../../interfaces/ICartCard";
+import productsActions from "../../store/actions/products";
+import Product from "../../interfaces/Product";
+const { calculateTotal } = productsActions;
 
 export default function CartCard({
   product,
-  updateProductUnits,
-}: CartCardProps) {
+}: // updateProductUnits,
+CartCardProps) {
   const {
     id,
     title,
@@ -16,22 +20,33 @@ export default function CartCard({
     units: initialUnits,
   } = product;
 
-  const unitsRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
+  const unitsToBuy = useRef<HTMLInputElement>(null);
+
   // const [totalPrice, setTotalPrice] = useState(price * initialUnits);
 
   const manageUnits = () => {
-    const newUnits = Number(unitsRef.current?.value);
+    const newUnits = Number(unitsToBuy.current?.value);
+    const productsOnCart = localStorage.getItem("cart");
+    let products: Product[] = [];
+    if (productsOnCart) {
+      products = JSON.parse(productsOnCart);
+    }
+    console.log("cantidad product", products);
+    const one = products.find((each: Product) => each.id === id);
 
-    const cart = localStorage.getItem("cart");
-    const productsOnCart = cart ? JSON.parse(cart) : [];
-    const one = productsOnCart.find((each) => each.id === id);
+    if (one) {
+      one.units = newUnits;
+      localStorage.setItem("cart", JSON.stringify(products));
+      dispatch(calculateTotal({ products }));
+    }
 
-    one.units = newUnits;
-    // one.priceTotal = price * newUnits; // Actualizar el precio total calculado
-    localStorage.setItem("cart", JSON.stringify(productsOnCart));
+    // one.units = newUnits;
+    // // one.priceTotal = price * newUnits; // Actualizar el precio total calculado
+    // localStorage.setItem("cart", JSON.stringify(productsOnCart));
 
-    updateProductUnits(id, newUnits);
-    // setTotalPrice(price * newUnits);
+    // updateProductUnits(id, newUnits);
+    // // setTotalPrice(price * newUnits);
   };
 
   const formattedPrice = new Intl.NumberFormat("es-ES", {
@@ -65,7 +80,7 @@ export default function CartCard({
             type="number"
             name="quantity"
             defaultValue={initialUnits}
-            ref={unitsRef}
+            ref={unitsToBuy}
             onChange={manageUnits}
             min="1"
             id={id}

@@ -1,18 +1,25 @@
 // import styles from "./NavBar.module.css";
 import { useRef } from "react";
 // import { useDispatch } from "react-redux";
-import { useDispatch } from "../../interfaces/hook";
+import { useDispatch, useSelector } from "../../interfaces/hook";
 
 import LogoImg from "../../assets/img/tiendamia-logo.svg";
 import NavButton from "../NavButton/NavButton";
-import { Link } from "react-router-dom";
-import productsActions from "../../store/actions/product";
+import { Link, useLocation } from "react-router-dom";
+import productsActions from "../../store/actions/products";
 
 const { captureText } = productsActions;
 
 export default function NavBar() {
   // const text = useRef();
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  console.log("pathname", pathname);
+
   const text = useRef<HTMLInputElement>(null!);
+  const textStore = useSelector((store) => store.products.text);
+
   const dispatch = useDispatch();
   const setText = () => {
     dispatch(captureText({ text: text.current.value }));
@@ -38,14 +45,17 @@ export default function NavBar() {
           />
         </Link>
         <form className="w-full md:w-1/3 flex items-center flex-grow justify-center py-2 md:py-0">
-          <input
-            className="h-[60px] border-0 rounded-[15px] w-full p-[10px] my-0 mx-[20px] text-[14px] text-center"
-            type="text"
-            placeholder="Search"
-            id="search"
-            ref={text}
-            onChange={setText}
-          />
+          {pathname === "/" && (
+            <input
+              className="h-[60px] border-0 rounded-[15px] w-full p-[10px] my-0 mx-[20px] text-[14px] text-center"
+              type="text"
+              placeholder="Search"
+              id="search"
+              ref={text}
+              defaultValue={textStore}
+              onChange={setText}
+            />
+          )}
         </form>
         <ul
           className="w-full md:w-1/3 flex items-center flex-grow justify-center pb-2

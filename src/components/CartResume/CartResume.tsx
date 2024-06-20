@@ -1,13 +1,17 @@
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-export default function CartResume({ price }) {
+export default function CartResume() {
   const navigate = useNavigate();
+
+  const total = useSelector((store) => store.products.total);
+  console.log(total);
 
   const formattedPrice = new Intl.NumberFormat("es-ES", {
     style: "decimal",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(price);
+  }).format(total);
 
   const clearCart = () => {
     localStorage.clear();
