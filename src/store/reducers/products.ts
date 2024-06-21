@@ -1,12 +1,13 @@
 import { createReducer } from "@reduxjs/toolkit";
 import productsActions from "../actions/products";
 
-const {captureText,calculateTotal} = productsActions
+const {captureText,calculateTotal,calculateQuantity} = productsActions
 
 // cada cambio tiene que actualizar este estado
 const initialState ={
   text:"",
-  total: 0
+  total: 0,
+  totalQuantity:0
 }
 
 const productReducer = createReducer(
@@ -36,5 +37,17 @@ const productReducer = createReducer(
        return newState;
     }
  )
+ .addCase(
+  calculateQuantity,
+  (state, action) => {
+     const products = action.payload.products
+     const totalQuantity = products.reduce((acc, each) => acc + each.units, 0);
+     const newState = {
+        ...state,
+        totalQuantity,
+     };
+     return newState;
+  }
+)
 )
 export default productReducer

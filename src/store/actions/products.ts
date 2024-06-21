@@ -17,6 +17,11 @@ const calculateTotal = createAction(
   (obj) => ({ payload: { products: obj.products } })
 );
 
+const calculateQuantity = createAction(
+  "calculateQuantity",
+  (obj) => ({ payload: { products: obj.products } })
+);
 
-const productsActions = {captureText,calculateTotal}
+
+const productsActions = {captureText,calculateTotal,calculateQuantity}
 export default productsActions

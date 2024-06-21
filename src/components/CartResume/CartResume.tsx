@@ -1,8 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
+import productsActions from "../../store/actions/products";
+
+const { calculateTotal, calculateQuantity } = productsActions;
 export default function CartResume() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const total = useSelector((store) => store.products.total);
   console.log(total);
@@ -13,9 +18,26 @@ export default function CartResume() {
     maximumFractionDigits: 0,
   }).format(total);
 
-  const clearCart = () => {
+  const handleCompra = () => {
+    dispatch(calculateTotal({ products: [] }));
+    dispatch(calculateQuantity({ products: [] }));
     localStorage.clear();
     navigate("/");
+  };
+
+  const clearCart = () => {
+    Swal.fire({
+      icon: "warning",
+      title: "¡Atención!",
+      text: "¿Quieres finalizar la compra?",
+      showCancelButton: true,
+      confirmButtonText: "Finalizar compra",
+      cancelButtonText: "Cerrar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleCompra();
+      }
+    });
   };
 
   return (

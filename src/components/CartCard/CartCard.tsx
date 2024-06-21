@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 // import ICartCard from "../../interfaces/ICartCard";
 import productsActions from "../../store/actions/products";
 import Product from "../../interfaces/Product";
-const { calculateTotal } = productsActions;
+const { calculateTotal, calculateQuantity } = productsActions;
 
 export default function CartCard({
   product,
@@ -39,6 +39,7 @@ CartCardProps) {
       one.units = newUnits;
       localStorage.setItem("cart", JSON.stringify(products));
       dispatch(calculateTotal({ products }));
+      dispatch(calculateQuantity({ products }));
     }
 
     // one.units = newUnits;

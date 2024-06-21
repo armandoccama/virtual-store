@@ -1,5 +1,5 @@
 // import styles from "./NavBar.module.css";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 // import { useDispatch } from "react-redux";
 import { useDispatch, useSelector } from "../../interfaces/hook";
 
@@ -8,7 +8,7 @@ import NavButton from "../NavButton/NavButton";
 import { Link, useLocation } from "react-router-dom";
 import productsActions from "../../store/actions/products";
 
-const { captureText } = productsActions;
+const { captureText, calculateQuantity } = productsActions;
 
 export default function NavBar() {
   // const text = useRef();
@@ -19,11 +19,22 @@ export default function NavBar() {
 
   const text = useRef<HTMLInputElement>(null!);
   const textStore = useSelector((store) => store.products.text);
+  const cartQuantity = useSelector((store) => store.products.totalQuantity);
+
+  console.log("navar cartquantity", cartQuantity);
 
   const dispatch = useDispatch();
   const setText = () => {
     dispatch(captureText({ text: text.current.value }));
   };
+
+  useEffect(() => {
+    const cart = localStorage.getItem("cart");
+    if (cart) {
+      const productsCart = JSON.parse(cart);
+      dispatch(calculateQuantity({ products: productsCart }));
+    }
+  }, []);
 
   return (
     <header className="w-full min-h-[150px] bg-[#ff3b3c] p-[20px 20px 0 20px] py-5 flex flex-col items-center">
@@ -78,13 +89,16 @@ export default function NavBar() {
               />
             </a>
           </li>
-          <li id="cart" className="w-[50px] h-[50px] list-none">
+          <li id="cart" className="relative w-[50px] h-[50px] list-none">
             <Link className="w-[50px] h-[50px]" to="/cart">
               <img
                 className="w-[50px] h-[50px] p-[10px]"
                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAAXNSR0IArs4c6QAAA81JREFUaEPtml2ITVEUx/9/UsjDiDFJHpQ8iAfNNCFfSV4YKUUzJOHVw0QKTT4ilDJ58UBpkq/yIIM3GV9NE0Z58aCRfGZGyseDByx3ZV/dtn3vuedjnzNz792vZ++11m//V3vts84hqmywynhRA650xWsK1xSusB2opXSFCfofTk1h3RIRkRGu9ACAXSSv2RxOhSsAWDl/A6gj+a0QupKBlXMayffVAjxEcko1pfQFkpvKAnYdWCJSD+ADgNHW8+Uk72R1yImIxvMVwHgrho0kL0YGNqf3DQCrLCPnSG7NEHgZAHvDtcpMJPklLvAGAJctI98B1JP8kQW0iBwHsNvy3UdyviueUBcPERkLYAjABMtYK0l7I1LhF5FnAOZazvaTPBQb2KT1WQDbLGO3SNqp7h3YnCuDDkfNuXgeJQW8FECPZewXgKkkVf3UhojoxqsAhUNjaCDpvC2GSmmjsK55o0XdctROsjM12r9X4KsA1lk+z5PcXCyO0MAG+giAvZbRfpKNaQGXKEdtJC8lDTwDwEuH0dkkn6cBLSKLAdyzfBUtR/l5kRQ2Kuuh0GQ5PEZyT0rArizrJbmwlP84wDsAnLKMvwMwvdiBkeRGiEg/gHmWzQ6Sh30B1wH4lMVVs0Q5aiL5xAuwSetuAKstBw8A3E5STYetWQBa7XLkejuy10ZOaQO8HsAVz3Dlmu8iuSVoclzgMQA+O66aQX59PF9BMjCzYgEblc8A2O6DIITN+ySXlDM/CWB1dLccZ57maMNuQbnX2tjARuXXWo4soMcAbnqCzJv9SPJ0GB9JAWvt22c5HiA5M0wwacxNCrjYVTOwLqYBWegjEWCT1n0Ami2AzlybpT1tKG8Xj0LDIuK6av4E0EhSuxLDYiSp8KRceXoLQNtA9tDu4QsPxD0k7WZESTeJAZu0PgFgpwewYiYPkjwQxl/SwJMBaIkaFyaIGHOzBTYqrwSgX+3SgM4e2EBr2/Soo2kfQ0zn0uEBnA8t12SbY3rG2vCze9lJwGd7aCVB4NtGooeW72CTsO8dWEROAmgDoCd4b65Oa6NPP8oFjjhrixn3Ciwi1wG0OJy3BEHHWVtqJ70Bi4j2urTn5RoPSS4qFlictUFp4xO4A4DzC57+cELS/rD+L1YRibw2S2DXy0Q+nsHci3tDCYUjr80SWDsgr3Iqj3IEUfK1UUQir80M2Ny49KeSLgu6m+SaoMBEJPLaTA6tgtuWqrVWfxID8DTodC4M1igdaW0mZSlIxSyeezuls4Apx2cNuJxdGslzagqPZPXKib3qFP4DPc5DTOx+iUAAAAAASUVORK5CYII="
               />
             </Link>
+            <span className="absolute top-0 right-0 bg-blac-500 text-white rounded-full w-[40px] h-[10px] flex items-center justify-center text-lg font-bold">
+              {cartQuantity}
+            </span>
           </li>
         </ul>
       </div>

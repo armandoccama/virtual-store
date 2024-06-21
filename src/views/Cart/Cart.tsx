@@ -11,7 +11,7 @@ import productsActions from "../../store/actions/products";
 // import ICartCard from "../../interfaces/ICartCard";
 import Product from "../../interfaces/Product";
 
-const { calculateTotal } = productsActions;
+const { calculateTotal, calculateQuantity } = productsActions;
 
 function Cart() {
   const [productsOnCart, setProductsOnCart] = useState<Product[]>([]);
@@ -29,6 +29,7 @@ function Cart() {
       const productsCart = JSON.parse(cart);
       setProductsOnCart(productsCart);
       dispatch(calculateTotal({ products: productsCart }));
+      dispatch(calculateQuantity({ products: productsCart }));
     }
   }, []);
 

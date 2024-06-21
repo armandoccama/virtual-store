@@ -3,8 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./checkout.module.css";
 import ProductProp from "../../interfaces/ProductProp";
 import Product from "../../interfaces/Product";
+import productsActions from "../../store/actions/products";
+import { useDispatch } from "react-redux";
+
+const { calculateQuantity } = productsActions;
 
 export function Checkout({ product }: ProductProp) {
+  const dispatch = useDispatch();
+
   // const { product } = props;
   const [quantity, setQuantity] = useState(1);
   const [button, setButton] = useState(false);
@@ -54,6 +60,7 @@ export function Checkout({ product }: ProductProp) {
       setButton(false);
     }
     localStorage.setItem("cart", JSON.stringify(products));
+    dispatch(calculateQuantity({ products }));
   };
 
   return (
